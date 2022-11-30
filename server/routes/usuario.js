@@ -3,10 +3,11 @@ const bcrypt = require("bcrypt");
 const _ = require("underscore");
 
 const Usuario = require("../models/usuario");
+const { verificarToken, verificarAdminRole } = require("../middlewares/autenticacion");
 
 const app = express();
 
-app.get("/usuario", (req, res) => {
+app.get("/usuario", verificarToken, (req, res) => {
     let desde = Number(req.query.desde) || 0;
     let limite = Number(req.query.limite) || 5;
 
@@ -15,7 +16,7 @@ app.get("/usuario", (req, res) => {
         .limit(limite)
         .exec((err, usuarios) => {
             if (err) {
-                return res.status(400).json({
+                return res.status(500).json({
                     ok: false,
                     err
                 });
@@ -23,7 +24,7 @@ app.get("/usuario", (req, res) => {
 
             Usuario.count({ estado: true }, (err, conteo) => {
                 if (err) {
-                    return res.status(400).json({
+                    return res.status(500).json({
                         ok: false,
                         err
                     });
@@ -37,7 +38,7 @@ app.get("/usuario", (req, res) => {
         })
 });
 
-app.post("/usuario", (req, res) => {
+app.post("/usuario", [verificarToken, verificarAdminRole], (req, res) => {
     let body = req.body;
 
     let usuario = new Usuario({
@@ -65,13 +66,13 @@ app.post("/usuario", (req, res) => {
 
 });
 
-app.put("/usuario/:id", (req, res) => {
+app.put("/usuario/:id", [verificarToken, verificarAdminRole], (req, res) => {
     let id = req.params.id;
     let body = _.pick(req.body, ["nombre", "email", "img", "role", "estado"]);
 
     Usuario.findByIdAndUpdate(id, body, { new: true, runValidators: true }, (err, usuarioDB) => {
         if (err) {
-            return res.status(400).json({
+            return res.status(500).json({
                 ok: false,
                 err
             });
@@ -95,7 +96,7 @@ app.put("/usuario/:id", (req, res) => {
 
 });
 
-app.delete("/usuario/:id", (req, res) => {
+app.delete("/usuario/:id", [verificarToken, verificarAdminRole], (req, res) => {
 
     let id = req.params.id;
 
@@ -105,7 +106,7 @@ app.delete("/usuario/:id", (req, res) => {
     Usuario.findByIdAndUpdate(id, { estado: false }, { new: true }, (err, usuarioBorrado) => {
 
         if (err) {
-            return res.status(400).json({
+            return res.status(500).json({
                 ok: false,
                 err
             });

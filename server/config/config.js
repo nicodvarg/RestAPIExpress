@@ -14,6 +14,20 @@ process.env.NODE_ENV = process.env.NODE_ENV || "dev";
 
 /* 
 ==================================
+        CADUCIDAD TOKEN
+==================================
+*/
+process.env.CADUCIDAD_TOKEN = process.env.CADUCIDAD_TOKEN || "30 days";
+
+/* 
+==================================
+        SEMILLA TOKEN
+==================================
+*/
+process.env.SEED = process.env.SEED || "esta-es-la-semilla-desarrollo";
+
+/* 
+==================================
             BASE DE DATOS
 ==================================
 */
