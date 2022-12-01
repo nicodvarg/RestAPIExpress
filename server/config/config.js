@@ -31,12 +31,11 @@ process.env.SEED = process.env.SEED || "esta-es-la-semilla-desarrollo";
             BASE DE DATOS
 ==================================
 */
-let urlDB;
+process.env.URLDB = process.env.URLDB || "mongodb://localhost:27017/cafe";
 
-if (process.env.NODE_ENV === "dev") {
-    urlDB = "mongodb://localhost:27017/cafe";
-} else {
-    urlDB = process.env.MONGO_URI;
-}
-
-process.env.URLDB = urlDB;
+/* 
+==================================
+        GOOGLE CLIENT ID
+==================================
+*/
+process.env.CLIENT_ID = process.env.CLIENT_ID || "365725802520-vv1b507uqa82c1e5pfpdi2rcm2cgg6is.apps.googleusercontent.com";
