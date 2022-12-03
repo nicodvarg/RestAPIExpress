@@ -67,19 +67,7 @@ async function verify(token) {
 
 app.post("/google", async (req, res) => {
 
-    let csrf_token = req.body.g_csrf_token;
-
-    if (!csrf_token) {
-        return res.status(401).json({
-            ok: false,
-            err: {
-                message: "token no válido"
-            }
-        });
-    }
-
     let tokenGoogle = req.body.credential;
-
     let usuarioGoogle = await verify(tokenGoogle)
         .catch(err => {
             return res.status(401).json({

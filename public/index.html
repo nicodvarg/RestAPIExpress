@@ -11,12 +11,33 @@
 <body>
 
     <div id="g_id_onload" data-client_id="365725802520-vv1b507uqa82c1e5pfpdi2rcm2cgg6is.apps.googleusercontent.com"
-        data-login_uri="/google"></div>
+        data-callback="handleToken"></div>
 
     <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-shape="rectangular"
         data-logo_alignment="left"></div>
 
     <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script>
+        function handleToken(data) {
+            console.log("Token Google: " + data.credential)
+            fetch("/google", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8'
+                },
+                body: JSON.stringify(data)
+            })
+                .then((resp) => {
+                    return resp.json()
+                })
+                .then((user) => {
+                    console.log(user)
+                })
+                .catch(err => {
+                    console.error("Ocurrió un error al loguearse con Google");
+                })
+        }
+    </script>
 </body>
 
 </html>
