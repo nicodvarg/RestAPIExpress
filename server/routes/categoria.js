@@ -115,7 +115,7 @@ app.put("/categoria/:id", verificarToken, (req, res) => {
     const descripcion = req.body.descripcion;
     const id = req.params.id;
 
-    Categoria.findByIdAndUpdate(id, { descripcion }, { new: true, runValidators: true }, (err, categoriaDB) => {
+    Categoria.findByIdAndUpdate(id, { descripcion, usuario: req.usuario._id }, { new: true, runValidators: true }, (err, categoriaDB) => {
         if (err) {
             return res.status(500).json({
                 ok: false,
