@@ -17,7 +17,7 @@ process.env.NODE_ENV = process.env.NODE_ENV || "dev";
         CADUCIDAD TOKEN
 ==================================
 */
-process.env.CADUCIDAD_TOKEN = process.env.CADUCIDAD_TOKEN || "30 days";
+process.env.CADUCIDAD_TOKEN = process.env.CADUCIDAD_TOKEN || "48h";
 
 /* 
 ==================================

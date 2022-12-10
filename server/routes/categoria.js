@@ -13,6 +13,8 @@ app.get("/categoria", verificarToken, (req, res) => {
     Categoria.find()
         .skip(desde)
         .limit(limite)
+        .sort("descripcion")
+        .populate("usuario", "nombre email")
         .exec((err, categoriasDB) => {
             if (err) {
                 return res.status(500).json({
@@ -45,28 +47,30 @@ app.get("/categoria/:id", verificarToken, (req, res) => {
 
     const id = req.params.id;
 
-    Categoria.findById(id, (err, categoriaDB) => {
-        if (err) {
-            return res.status(500).json({
-                ok: false,
-                err
-            });
-        }
-        if (!categoriaDB) {
-            return res.status(400).json({
-                ok: false,
-                err: {
-                    message: "Categoría no encontrada"
-                }
-            });
-        }
+    Categoria.findById(id)
+        .populate("usuario", "nombre email")
+        .exec((err, categoriaDB) => {
+            if (err) {
+                return res.status(500).json({
+                    ok: false,
+                    err
+                });
+            }
+            if (!categoriaDB) {
+                return res.status(400).json({
+                    ok: false,
+                    err: {
+                        message: "Categoría no encontrada"
+                    }
+                });
+            }
 
-        res.json({
-            ok: true,
-            categoria: categoriaDB
+            res.json({
+                ok: true,
+                categoria: categoriaDB
+            });
+
         });
-
-    });
 
 });
 
