@@ -1,3 +1,7 @@
 # RestAPIExpress
 
-Practica de Rest API con Express (JWT, Google Sign-In)
+Practica de Rest API:
+* Express
+* MongoDB / Mongoose
+* Jwt
+* Google Sign-In
