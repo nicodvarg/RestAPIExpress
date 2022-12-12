@@ -2,6 +2,7 @@ const express = require("express");
 const fileUpload = require("express-fileupload");
 const Usuario = require("../models/usuario");
 const Producto = require("../models/producto");
+const { verificarToken } = require("../middlewares/autenticacion");
 
 const fs = require("fs");
 const path = require("path");
@@ -10,7 +11,7 @@ const app = express();
 
 app.use(fileUpload());
 
-app.put("/upload/:tipo/:id", (req, res) => {
+app.put("/upload/:tipo/:id", verificarToken, (req, res) => {
 
     const tipo = req.params.tipo;
     const id = req.params.id;
@@ -61,10 +62,22 @@ app.put("/upload/:tipo/:id", (req, res) => {
             });
         }
 
-        if (tipo === "usuario")
+        if (tipo === "usuario") {
+
+            if (id !== req.usuario._id) {
+                return res.status(401).json({
+                    ok: false,
+                    err: {
+                        message: "No se puede cambiar la imagen de otro usuario"
+                    }
+                });
+            }
             actualizarUsuario(id, nombreArchivo, res);
-        else
+        }
+        else {
+
             actualizarProducto(id, nombreArchivo, res);
+        }
 
     });
 });
